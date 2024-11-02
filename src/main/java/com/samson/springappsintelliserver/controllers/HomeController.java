@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class HomeController {
 
+    // this is just houses test endpoints
+
     @GetMapping(path = "/home")
     public String hello(HttpServletRequest request) {
         return "Intelli Server is up and running! " + request.getSession().getId();

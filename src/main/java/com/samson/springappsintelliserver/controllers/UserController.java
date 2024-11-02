@@ -30,4 +30,10 @@ public class UserController {
     public Users register(@RequestBody Users user) {
         return this.userService.registerUser(user);
     }
+
+    @PostMapping(path = "login")
+    public String login(@RequestBody Users user) {
+        return "Login successful!";
+        //return this.userService.loginUser(user);
+    }
 }
