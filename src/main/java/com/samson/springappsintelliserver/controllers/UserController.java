@@ -33,7 +33,6 @@ public class UserController {
 
     @PostMapping(path = "login")
     public String login(@RequestBody Users user) {
-        return "Login successful!";
-        //return this.userService.loginUser(user);
+        return userService.verifyUser(user);
     }
 }
