@@ -1,5 +1,6 @@
 package com.samson.springappsintelliserver.config;
 
+import com.samson.springappsintelliserver.services.MyUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +19,12 @@ import org.springframework.security.web.SecurityFilterChain;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+    private final UserDetailsService userDetailsService;
+
+    @Autowired
+    public SecurityConfig(UserDetailsService userDetailsService) {
+        this.userDetailsService = userDetailsService;
+    }
 
     // returning our own SecurityFilterChain bean - responsible for configuring security filters
     @Bean
@@ -32,13 +39,13 @@ public class SecurityConfig {
 
     // returning our own UserDetailsService bean - responsible for loading user from the database for authentication
     // default password and username from application.properties will be overridden by this bean
-/*    @Bean
+    @Bean
     public AuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 
         provider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
-        provider.setUserDetailsService(userDetailsService);
+        provider.setUserDetailsService(this.userDetailsService);
 
         return provider;
-    }*/
+    }
 }

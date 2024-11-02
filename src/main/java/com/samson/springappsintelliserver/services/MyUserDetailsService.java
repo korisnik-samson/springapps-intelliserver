@@ -1,6 +1,6 @@
 package com.samson.springappsintelliserver.services;
 
-import com.samson.springappsintelliserver.models.User;
+import com.samson.springappsintelliserver.models.Users;
 import com.samson.springappsintelliserver.models.UserPrincipal;
 import com.samson.springappsintelliserver.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +20,8 @@ public class MyUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+        Users user = userRepository.findByUsername(username);
+        //User user = userRepository.findByEmail(user_email);
 
         if (user == null) throw new UsernameNotFoundException("User not found");
 
