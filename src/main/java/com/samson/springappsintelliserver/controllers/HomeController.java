@@ -15,9 +15,9 @@ public class HomeController {
         return "Intelli Server is up and running! " + request.getSession().getId();
     }
 
+    // the csrf token endpoint will not work due to it being off in the security configurationp;.olk,m
     @GetMapping(path = "/csrf-token")
     public CsrfToken getCsrfToken(HttpServletRequest request) {
         return (CsrfToken) request.getAttribute("_csrf");
     }
-
 }

@@ -18,10 +18,11 @@ public class UserPrincipal implements UserDetails {
         return user.getEmail();
     }
 
+    // this is the method that returns the user's role
+    // take note of the role type
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        // return Collections.singleton(new SimpleGrantedAuthority(user.getRole().toString()));
-        return Collections.singleton(new SimpleGrantedAuthority("USER"));
+        return Collections.singleton(new SimpleGrantedAuthority(user.getRole().toString()));
     }
 
     @Override

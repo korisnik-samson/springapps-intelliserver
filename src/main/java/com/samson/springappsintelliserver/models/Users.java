@@ -1,5 +1,6 @@
 package com.samson.springappsintelliserver.models;
 
+import com.samson.springappsintelliserver.types.UserType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -9,8 +10,8 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 @ToString
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
-//@Table(name = "_user", uniqueConstraints = { @UniqueConstraint(columnNames = { "user_id" }) })
+// @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+// @Table(name = "_user", uniqueConstraints = { @UniqueConstraint(columnNames = { "user_id" }) })
 @Table(name = "_user")
 public class Users {
     @Id
@@ -33,4 +34,9 @@ public class Users {
     /* adding a json ignore might be the problem */
     @Column(name = "user_password")
     private String password;
+
+    @Column(name = "user_role")
+    @Enumerated(EnumType.STRING)
+    private UserType role;
+
 }
