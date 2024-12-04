@@ -37,12 +37,15 @@ public class JWTService {
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
 
+        // note that the token expires in 30 days
         return Jwts.builder()
                 .claims()
                 .add(claims)
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + Utils.calculateTime(24)))
+                // note the linux time format is in use... 30 days might be a problem
+                // optimal time is 14 days
+                .expiration(new Date(System.currentTimeMillis() + Utils.calculateTime(true, 14)))
                 .and().signWith(getKey()).compact();
     }
 

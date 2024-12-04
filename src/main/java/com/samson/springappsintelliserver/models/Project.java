@@ -14,6 +14,7 @@ import java.sql.Date;
 @AllArgsConstructor
 @Builder
 @ToString
+@Table(name = "_project")
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
