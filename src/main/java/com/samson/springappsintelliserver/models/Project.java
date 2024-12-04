@@ -29,12 +29,12 @@ public class Project {
 
     // note the date format
     @Column(name = "project_start_date")
-    @DateTimeFormat(pattern = "yyyy-mm-dd", iso = DateTimeFormat.ISO.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE)
     private Date projectStartDate;
 
     // note the date formats
     @Column(name = "project_end_date")
-    @DateTimeFormat(pattern = "yyyy-mm-dd", iso = DateTimeFormat.ISO.DATE)
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE)
     private Date projectEndDate;
 
     @Column(name = "project_status")

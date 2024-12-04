@@ -29,6 +29,7 @@ public class ProjectController {
         return this.projectService.getProjectById(projectId);
     }
 
+    // endpoint should be protected as such - only admin can create projects
     @PostMapping(path = "api/projects")
     public Project createProject(@RequestBody Project project) {
         return this.projectService.addProject(project);
