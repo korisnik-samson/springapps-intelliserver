@@ -35,4 +35,10 @@ public class ProjectController {
         return this.projectService.addProject(project);
     }
 
+    // endpoint should be protected as such - only admin can update projects
+    @PatchMapping(path = "api/projects/{id}")
+    public Project updateProject(@PathVariable("id") Integer projectId, @RequestBody Project project) {
+        return this.projectService.updateProject(projectId, project);
+    }
+
 }

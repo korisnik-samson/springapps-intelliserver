@@ -1,15 +1,16 @@
 package com.samson.springappsintelliserver.services;
 
 import com.samson.springappsintelliserver.models.Project;
-import com.samson.springappsintelliserver.models.UserPrincipal;
+import com.samson.springappsintelliserver.models.Users;
 import com.samson.springappsintelliserver.repositories.ProjectRepository;
+import com.samson.springappsintelliserver.repositories.UserRepository;
 import com.samson.springappsintelliserver.types.UserType;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNull;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.server.ResponseStatusException;
@@ -23,12 +24,14 @@ public class ProjectService {
     private final ProjectRepository projectRepository;
     private final JWTService jwtService;
     private final MyUserDetailsService usersService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public ProjectService(ProjectRepository projectRepository, JWTService jwtService, MyUserDetailsService usersService) {
+    public ProjectService(ProjectRepository projectRepository, JWTService jwtService, MyUserDetailsService usersService, UserRepository userRepository) {
         this.projectRepository = projectRepository;
         this.jwtService = jwtService;
         this.usersService = usersService;
+        this.userRepository = userRepository;
     }
 
     public List<Project> getProjects() {
@@ -39,14 +42,55 @@ public class ProjectService {
         return this.projectRepository.findById(projectId);
     }
 
-    public Project addProject(Project project) {
-        // get the user token via http request
+    public Project addProject(@NonNull Project project) {
+        verifyAuthorities();
+
+        // at this stage the user is known
+        // as an admin after the verifyAuthorities method
+        if (project.getManager() == null) {
+            Users user = userRepository.findByUsername(extractUsername());
+
+            project.setManager(user);
+        }
+
+        return this.projectRepository.save(project);
+    }
+
+    public Project updateProject(@NonNull Integer id, @NonNull Project updatedProject){
+        verifyAuthorities();
+
+        Project currentProject = this.projectRepository.findById(id).orElseThrow(
+                () -> new IllegalStateException("Project not found")
+        );
+
+        Optional.ofNullable(updatedProject.getProjectName())
+                .ifPresent(currentProject::setProjectName);
+
+        Optional.ofNullable(updatedProject.getProjectDescription())
+                .ifPresent(currentProject::setProjectDescription);
+
+        Optional.ofNullable(updatedProject.getProjectStatus())
+                .ifPresent(currentProject::setProjectStatus);
+
+        Optional.ofNullable(updatedProject.getProjectStartDate())
+                .ifPresent(currentProject::setProjectStartDate);
+
+        Optional.ofNullable(updatedProject.getProjectEndDate())
+                .ifPresent(currentProject::setProjectEndDate);
+
+        return this.projectRepository.save(currentProject);
+    }
+
+    private String extractUsername() {
+        // extract username from the token via servlet request
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
         String token = request.getHeader("Authorization").substring(7);
 
-        // extract user authority from token
-        String username = jwtService.extractUsername(token);
-        UserDetails userDetails = usersService.loadUserByUsername(username);
+        return jwtService.extractUsername(token);
+    }
+
+    private void verifyAuthorities() {
+        UserDetails userDetails = usersService.loadUserByUsername(extractUsername());
 
         // check if user is an admin from the authorities
         userDetails.getAuthorities()
@@ -58,11 +102,5 @@ public class ProjectService {
                                 HttpStatus.FORBIDDEN, "Unauthorized access - Only admin can create projects"
                         )
                 );
-
-        return this.projectRepository.save(project);
-    }
-
-    private boolean verifyAuthorities() {
-        return false;
     }
 }

@@ -46,6 +46,7 @@ public class SecurityConfig {
     // default password and username from application.properties will be overridden by this bean
     @Bean
     public AuthenticationProvider authenticationProvider() {
+        // using DaoAuthenticationProvider to authenticate the user
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 
         provider.setPasswordEncoder(new BCryptPasswordEncoder(12));
