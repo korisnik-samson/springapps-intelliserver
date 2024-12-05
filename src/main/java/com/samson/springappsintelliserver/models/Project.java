@@ -6,7 +6,9 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
+
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,13 +33,13 @@ public class Project {
 
     // note the date format
     @Column(name = "project_start_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE)
-    private Date projectStartDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime projectStartDate;
 
     // note the date formats
     @Column(name = "project_end_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE)
-    private Date projectEndDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime projectEndDate;
 
     @Column(name = "project_status")
     @Enumerated(EnumType.STRING)

@@ -15,6 +15,9 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.sql.Date;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,13 +48,17 @@ public class ProjectService {
     public Project addProject(@NonNull Project project) {
         verifyAuthorities();
 
-        // at this stage the user is known
-        // as an admin after the verifyAuthorities method
+        // at this stage the user is known to be an admin
         if (project.getManager() == null) {
             Users user = userRepository.findByUsername(extractUsername());
 
             project.setManager(user);
         }
+
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+
+        project.setProjectStartDate(LocalDateTime.parse(dateTimeFormatter.format(now), dateTimeFormatter));
 
         return this.projectRepository.save(project);
     }
@@ -81,6 +88,11 @@ public class ProjectService {
         return this.projectRepository.save(currentProject);
     }
 
+    public void deleteProject(Integer projectId) {
+        verifyAuthorities();
+        this.projectRepository.deleteById(projectId);
+    }
+
     private String extractUsername() {
         // extract username from the token via servlet request
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
@@ -99,7 +111,7 @@ public class ProjectService {
                 .findAny()
                 .orElseThrow(
                         () -> new ResponseStatusException(
-                                HttpStatus.FORBIDDEN, "Unauthorized access - Only admin can create projects"
+                                HttpStatus.FORBIDDEN, "Unauthorized access - Only admins can perform this operation"
                         )
                 );
     }

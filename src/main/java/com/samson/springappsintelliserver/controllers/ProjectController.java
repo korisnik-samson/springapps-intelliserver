@@ -41,4 +41,10 @@ public class ProjectController {
         return this.projectService.updateProject(projectId, project);
     }
 
+    // endpoint should be protected as such - only admin can delete projects
+    @DeleteMapping(path = "api/projects/{id}")
+    public void deleteProject(@PathVariable("id") Integer projectId) {
+        this.projectService.deleteProject(projectId);
+    }
+
 }
