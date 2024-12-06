@@ -4,6 +4,7 @@ import com.samson.springappsintelliserver.models.Project;
 import com.samson.springappsintelliserver.models.Users;
 import com.samson.springappsintelliserver.repositories.ProjectRepository;
 import com.samson.springappsintelliserver.repositories.UserRepository;
+import com.samson.springappsintelliserver.types.ProjectStatus;
 import com.samson.springappsintelliserver.types.UserType;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +16,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -59,6 +59,9 @@ public class ProjectService {
         LocalDateTime now = LocalDateTime.now();
 
         project.setProjectStartDate(LocalDateTime.parse(dateTimeFormatter.format(now), dateTimeFormatter));
+        
+        // set the project status to PENDING
+        if (project.getProjectStatus() == null) project.setProjectStatus(ProjectStatus.PENDING);
 
         return this.projectRepository.save(project);
     }

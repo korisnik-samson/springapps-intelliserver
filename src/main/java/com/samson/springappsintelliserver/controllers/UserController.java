@@ -1,8 +1,10 @@
 package com.samson.springappsintelliserver.controllers;
 
 import com.samson.springappsintelliserver.models.Users;
+import com.samson.springappsintelliserver.providers.PasswordProvider;
 import com.samson.springappsintelliserver.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,8 +38,21 @@ public class UserController {
     }
 
     // endpoint for updating a user
+    // passwords can be updated here
+    // TODO: add a check to ensure that the user is updating their own account
     @PatchMapping(path = "api/users/{id}")
     public Users updateUser(@PathVariable("id") Integer userId, @RequestBody Users user) {
         return this.userService.updateUser(userId, user);
+    }
+
+    @PatchMapping(path = "api/users/{id}/password")
+    public Users updatePassword(@PathVariable("id") Integer userId, @RequestBody PasswordProvider passwordBody) {
+        return this.userService.updatePassword(userId, passwordBody);
+    }
+    
+    // endpoint for logging out a user
+    @GetMapping(path = "logout")
+    public ResponseEntity<?> logout() {
+        return this.userService.logout();
     }
 }
