@@ -1,14 +1,10 @@
 package com.samson.springappsintelliserver.models;
 
-
 import com.samson.springappsintelliserver.types.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
-
-
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
 import java.util.Set;
 
