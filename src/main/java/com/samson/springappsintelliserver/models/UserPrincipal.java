@@ -14,10 +14,6 @@ public class UserPrincipal implements UserDetails {
         this.user = user;
     }
 
-    public String getEmail() {
-        return user.getEmail();
-    }
-
     // this is the method that returns the user's role
     // take note of the role type
     @Override

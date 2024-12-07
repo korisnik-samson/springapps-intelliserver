@@ -55,4 +55,10 @@ public class UserController {
     public ResponseEntity<?> logout() {
         return this.userService.logout();
     }
+
+    // endpoint for deleting a user
+    @DeleteMapping(path = "api/users/{id}")
+    public ResponseEntity<?> deleteUser(@PathVariable("id") Integer userId) {
+        return this.userService.deleteUser(userId);
+    }
 }

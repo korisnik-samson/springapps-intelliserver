@@ -1,19 +1,20 @@
 package com.samson.springappsintelliserver.services;
 
+import com.samson.springappsintelliserver.models.UserPrincipal;
 import com.samson.springappsintelliserver.models.Users;
 import com.samson.springappsintelliserver.providers.PasswordProvider;
 import com.samson.springappsintelliserver.repositories.UserRepository;
-import com.samson.springappsintelliserver.types.UserType;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -120,6 +121,24 @@ public class UserService {
         String token = request.getHeader("Authorization").substring(7);
 
         return jwtService.extractUsername(token);
+    }
+
+    public ResponseEntity<HttpStatusCode> deleteUser(Integer userId) {
+        // fetch the user by id
+        Users user = this.userRepository.findById(userId).orElseThrow(
+                () -> new IllegalStateException("User not found"));
+
+        // get the username from the token
+        String username = extractUsername();
+
+        // verify that the user is deleting their own account
+        if (!user.getUsername().equals(username))
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "You are not authorized to delete this account");
+
+        // delete the user
+        this.userRepository.delete(user);
+
+        return ResponseEntity.ok().build();
     }
 
     // delete user - this simply invalidates the user via UserPrincipal
