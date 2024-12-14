@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import java.sql.Date;
+import java.time.LocalDateTime;
 
 @Data
 @Entity
@@ -36,11 +36,11 @@ public class Task {
     private TaskPriority taskPriority;
 
     @Column(name = "task_start_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE)
-    private Date taskStartDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime taskStartDate;
 
     @Column(name = "task_end_date")
-    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE)
-    private Date taskEndDate;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss", iso = DateTimeFormat.ISO.DATE_TIME)
+    private LocalDateTime taskEndDate;
 
 }
