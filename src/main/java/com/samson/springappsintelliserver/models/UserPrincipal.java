@@ -14,7 +14,7 @@ public class UserPrincipal implements UserDetails {
         this.user = user;
     }
 
-    // this is the method that returns the user's role
+    // this is the method that returns the user's role 
     // take note of the role type
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

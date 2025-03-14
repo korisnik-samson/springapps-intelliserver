@@ -4,6 +4,7 @@ import com.samson.springappsintelliserver.models.Users;
 import com.samson.springappsintelliserver.providers.PasswordProvider;
 import com.samson.springappsintelliserver.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -39,8 +40,23 @@ public class UserService {
     public List<Users> getUsers() {
         return this.userRepository.findAll();
     }
+    
+    private boolean isDuplicateUser(@NonNull Users user) {
+        List<Users> usersList = this.userRepository.findAll();
+        
+        for (Users candidate : usersList) 
+            if (candidate.getUsername().equals(user.getUsername())) return true;
+        
+        return false;
+    }
 
     public Users registerUser(@NonNull Users user) {
+        // there should be a check to ensure that the user does not already exist
+        // this should be done by checking the username
+        
+        if (isDuplicateUser(user))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists");
+        
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         return this.userRepository.save(user);
@@ -94,7 +110,8 @@ public class UserService {
         String username = extractUsername();
 
         Users currentUser = this.userRepository.findById(userId).orElseThrow(
-                () -> new IllegalStateException("User not found"));
+                () -> new IllegalStateException("User not found")
+        );
 
         // verify that the user is updating their own account
         if (!currentUser.getUsername().equals(username))

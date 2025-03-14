@@ -36,7 +36,7 @@ public class SecurityConfig {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(request -> request.requestMatchers("register", "login")
                         .permitAll()
-                        .anyRequest()
+                        .anyRequest() 
                         .authenticated()
                 )//.logout(logout -> logout.logoutUrl("logout"))
                 .httpBasic(Customizer.withDefaults())
