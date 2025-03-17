@@ -10,9 +10,14 @@ public class HomeController {
 
     // this is just houses test endpoints
 
-    @GetMapping(path = "/home")
-    public String hello(HttpServletRequest request) {
+    @GetMapping(path = "/home-id")
+    public String helloId(HttpServletRequest request) {
         return "Intelli Server is up and running! " + request.getSession().getId();
+    }
+
+    @GetMapping(path = "/home")
+    public String hello() {
+        return "Intelli Server is up and running!";
     }
 
     // the csrf token endpoint will not work due to it being off in the security configuration
