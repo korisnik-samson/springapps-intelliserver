@@ -4,6 +4,7 @@ import com.samson.springappsintelliserver.models.Users;
 import com.samson.springappsintelliserver.providers.PasswordProvider;
 import com.samson.springappsintelliserver.repositories.UserRepository;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class UserService {
@@ -101,8 +103,30 @@ public class UserService {
 
     public ResponseEntity<?> logout() {
         // invalidate the token
+        // this is done by simply removing the token from the client side
+        // there is no need to invalidate the token on the server side
+        // as the token is stateless
 
-        return ResponseEntity.ok().build();
+        try {
+            HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
+            String token = request.getHeader("Authorization");
+
+            if (token != null && token.startsWith("Bearer ")) {
+                token = token.substring(7);
+
+                HttpSession session = request.getSession(false);
+
+                if (session != null) session.invalidate();
+            }
+            
+            return ResponseEntity.ok().body(Map.of("message", "Logout successful"));
+            
+        } catch (Exception e) {
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(Map.of("message", "Logout failed"));
+        }
+        
     }
 
     public Users updatePassword(@NonNull Integer userId, @NonNull PasswordProvider provider) {
