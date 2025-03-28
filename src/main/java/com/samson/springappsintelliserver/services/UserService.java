@@ -3,6 +3,7 @@ package com.samson.springappsintelliserver.services;
 import com.samson.springappsintelliserver.models.Users;
 import com.samson.springappsintelliserver.providers.PasswordProvider;
 import com.samson.springappsintelliserver.repositories.UserRepository;
+import com.samson.springappsintelliserver.types.Token;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.apache.catalina.User;
@@ -180,8 +181,8 @@ public class UserService {
 
     // delete user - this simply invalidates the user via UserPrincipal
     
-    public String getUsernameFromToken(String token) {
+    public String getUsernameFromToken(@NonNull Token token) {
         // extract the username from the token
-        return jwtService.extractUsername(token);
+        return jwtService.extractUsername(token.getToken());
     }
 }

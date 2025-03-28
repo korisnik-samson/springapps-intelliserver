@@ -1,6 +1,7 @@
 package com.samson.springappsintelliserver.controllers;
 
 import com.samson.springappsintelliserver.services.UserService;
+import com.samson.springappsintelliserver.types.Token;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.csrf.CsrfToken;
@@ -37,7 +38,7 @@ public class HomeController {
     }
     
     @GetMapping(path = "/de-token")
-    public String getUsername(@RequestBody String token) {
+    public String getUsername(@RequestBody Token token) {
         // returns the username from the provided token
         return this.userService.getUsernameFromToken(token);
     }
