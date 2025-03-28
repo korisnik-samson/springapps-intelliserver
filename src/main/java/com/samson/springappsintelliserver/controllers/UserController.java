@@ -51,7 +51,7 @@ public class UserController {
     }
     
     // endpoint for logging out a user
-    @GetMapping(path = "logout")
+    @PostMapping(path = "logout")
     public ResponseEntity<?> logout() {
         return this.userService.logout();
     }

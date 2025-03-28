@@ -126,7 +126,6 @@ public class UserService {
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(Map.of("message", "Logout failed"));
         }
-        
     }
 
     public Users updatePassword(@NonNull Integer userId, @NonNull PasswordProvider provider) {
@@ -180,4 +179,9 @@ public class UserService {
     }
 
     // delete user - this simply invalidates the user via UserPrincipal
+    
+    public String getUsernameFromToken(String token) {
+        // extract the username from the token
+        return jwtService.extractUsername(token);
+    }
 }
