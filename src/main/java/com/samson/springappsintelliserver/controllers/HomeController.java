@@ -5,7 +5,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.csrf.CsrfToken;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -37,7 +37,7 @@ public class HomeController {
     }
     
     @GetMapping(path = "/de-token")
-    public String getUsername(@RequestParam String token) {
+    public String getUsername(@RequestBody String token) {
         // returns the username from the provided token
         return this.userService.getUsernameFromToken(token);
     }
