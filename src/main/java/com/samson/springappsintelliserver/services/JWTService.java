@@ -51,7 +51,7 @@ public class JWTService {
 
     @NonNull
     private SecretKey getKey() {
-        this.SECRET_KEY = "eW91YmFzdGFyZA==";
+        //this.SECRET_KEY = "eW91YmFzdGFyZA==";
         
         byte[] key = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(key);
