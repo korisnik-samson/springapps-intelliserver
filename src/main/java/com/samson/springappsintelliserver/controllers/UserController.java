@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class UserController {
@@ -23,6 +24,11 @@ public class UserController {
     @GetMapping(path = "api/users")
     public List<Users> getUsers() {
         return this.userService.getUsers();
+    }
+    
+    @GetMapping(path = "api/users/{username}")
+    public Optional<Users> getUser(@PathVariable String username) {
+        return this.userService.getUserByEmail(username);
     }
 
     // endpoint for registering a user

@@ -23,6 +23,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -42,6 +43,10 @@ public class UserService {
 
     public List<Users> getUsers() {
         return this.userRepository.findAll();
+    }
+    
+    public Optional<Users> getUserByEmail(String username) {
+        return Optional.ofNullable(this.userRepository.findByUsername(username));
     }
     
     private boolean isDuplicateUser(@NonNull Users user) {
