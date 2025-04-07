@@ -20,7 +20,7 @@ import java.util.function.Function;
 
 @Service
 public class JWTService {
-    private String SECRET_KEY = "eW91YmFzdGFyZA==";
+    private String SECRET_KEY;
 
     public JWTService() {
         try {
@@ -51,6 +51,8 @@ public class JWTService {
 
     @NonNull
     private SecretKey getKey() {
+        this.SECRET_KEY = "eW91YmFzdGFyZA==";
+        
         byte[] key = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(key);
     }
