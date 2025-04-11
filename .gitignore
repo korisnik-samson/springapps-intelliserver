@@ -19,6 +19,9 @@ target/
 *.iml
 *.ipr
 
+### Azure DevOps ###
+.azure
+
 ### NetBeans ###
 /nbproject/private/
 /nbbuild/
