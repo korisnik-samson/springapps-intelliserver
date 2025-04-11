@@ -6,7 +6,6 @@ import com.samson.springappsintelliserver.repositories.UserRepository;
 import com.samson.springappsintelliserver.types.Token;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -32,6 +31,7 @@ public class UserService {
     private final JWTService jwtService;
     AuthenticationManager authenticationManager;
 
+    // BCryptPasswordEncoder is used to hash the password - 12 is usually a sweet spot
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
     @Autowired

@@ -5,6 +5,9 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -18,16 +21,29 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import com.azure.identity.DefaultAzureCredentialBuilder;
+import com.azure.security.keyvault.secrets.SecretClient;
+import com.azure.security.keyvault.secrets.models.KeyVaultSecret;
+import com.azure.security.keyvault.secrets.SecretClientBuilder;
+import com.azure.core.credential.TokenCredential;
+
 @Service
 public class JWTService {
-    private String SECRET_KEY;
+    private final String SECRET_KEY;
+    private final SecretClient secretClient;
 
-    public JWTService() {
+    public JWTService(SecretClient secretClient) {
+        this.secretClient = secretClient;
+
         try {
             KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
             SecretKey secretKey = keyGenerator.generateKey();
 
             SECRET_KEY = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+            
+            // Store the secret key in Azure Key Vault
+            KeyVaultSecret secret = new KeyVaultSecret("jwt-secret-key", SECRET_KEY);
+            this.secretClient.setSecret(secret);
 
         } catch(NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
@@ -38,21 +54,19 @@ public class JWTService {
         Map<String, Object> claims = new HashMap<>();
 
         // note that the token expires in 30 days
+        // note the linux time format is in use... 30 days might be a problem
+        // optimal time is 14 days
         return Jwts.builder()
                 .claims()
                 .add(claims)
                 .subject(username)
                 .issuedAt(new Date(System.currentTimeMillis()))
-                // note the linux time format is in use... 30 days might be a problem
-                // optimal time is 14 days
                 .expiration(new Date(System.currentTimeMillis() + Utils.calculateTime(true, 14)))
                 .and().signWith(getKey()).compact();
     }
 
     @NonNull
     private SecretKey getKey() {
-        //this.SECRET_KEY = "eW91YmFzdGFyZA==";
-        
         byte[] key = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(key);
     }

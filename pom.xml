@@ -112,6 +112,95 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+        <!-- AZURE DEPS -->
+
+        <!-- https://mvnrepository.com/artifact/com.azure/azure-identity -->
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-identity</artifactId>
+            <version>1.14.2</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-security-keyvault-certificates</artifactId>
+            <version>4.7.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-security-keyvault-keys</artifactId>
+            <version>4.9.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-security-keyvault-secrets</artifactId>
+            <version>4.9.4</version>
+        </dependency>
+        
+        <!--&lt;!&ndash; https://mvnrepository.com/artifact/net.java.dev.jna/jna-platform &ndash;&gt;
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna-platform</artifactId>
+            <version>5.14.0</version>
+        </dependency>
+
+        &lt;!&ndash; https://mvnrepository.com/artifact/com.microsoft.azure/msal4j-persistence-extension &ndash;&gt;
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>msal4j-persistence-extension</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        &lt;!&ndash; https://mvnrepository.com/artifact/com.microsoft.azure/msal4j &ndash;&gt;
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>msal4j</artifactId>
+            <version>1.17.2</version>
+        </dependency>
+        &lt;!&ndash; https://mvnrepository.com/artifact/com.azure/azure-identity &ndash;&gt;
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-identity</artifactId>
+            <version>1.14.2</version>
+            <scope>compile</scope>
+        </dependency>
+        
+        &lt;!&ndash; https://mvnrepository.com/artifact/com.azure/azure-core &ndash;&gt;
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-core</artifactId>
+            <version>1.55.3</version>
+        </dependency>
+        &lt;!&ndash; https://mvnrepository.com/artifact/com.azure/azure-json &ndash;&gt;
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-json</artifactId>
+            <version>1.5.0</version>
+        </dependency>
+        &lt;!&ndash; https://mvnrepository.com/artifact/com.azure/azure-core-http-netty &ndash;&gt;
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-core-http-netty</artifactId>
+            <version>1.15.11</version>
+        </dependency>
+        &lt;!&ndash; https://mvnrepository.com/artifact/com.azure/azure-security-keyvault-secrets &ndash;&gt;
+        <dependency>
+            <groupId>com.azure</groupId>
+            <artifactId>azure-security-keyvault-secrets</artifactId>
+            <version>4.9.0</version>
+            <scope>runtime</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.azure.spring</groupId>
+            <artifactId>spring-cloud-azure-dependencies</artifactId>
+            <version>5.21.0</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>-->
+        <!--<dependency>
+            <groupId>com.azure.spring</groupId>
+            <artifactId>spring-cloud-azure-starter-keyvault</artifactId>
+        </dependency>-->
 	</dependencies>
 
 	<build>
