@@ -20,7 +20,7 @@ target/
 *.ipr
 
 ### Azure DevOps ###
-.azure
+### .azure
 
 ### NetBeans ###
 /nbproject/private/
