@@ -39,10 +39,10 @@ public class JWTService {
             KeyGenerator keyGenerator = KeyGenerator.getInstance("HmacSHA256");
             SecretKey secretKey = keyGenerator.generateKey();
 
-            SECRET_KEY = Base64.getEncoder().encodeToString(secretKey.getEncoded());
+            this.SECRET_KEY = Base64.getEncoder().encodeToString(secretKey.getEncoded());
             
             // Store the secret key in Azure Key Vault
-            KeyVaultSecret secret = new KeyVaultSecret("jwt-secret-key", SECRET_KEY);
+            KeyVaultSecret secret = new KeyVaultSecret("jwt-secret-key", this.SECRET_KEY);
             this.secretClient.setSecret(secret);
 
         } catch(NoSuchAlgorithmException e) {
@@ -67,7 +67,7 @@ public class JWTService {
 
     @NonNull
     private SecretKey getKey() {
-        byte[] key = Decoders.BASE64.decode(SECRET_KEY);
+        byte[] key = Decoders.BASE64.decode(this.SECRET_KEY);
         return Keys.hmacShaKeyFor(key);
     }
 
@@ -82,8 +82,7 @@ public class JWTService {
     }
 
     private Claims extractAllClaims(String token) {
-        return Jwts.parser().verifyWith(getKey())
-                .build().parseSignedClaims(token).getPayload();
+        return Jwts.parser().verifyWith(getKey()).build().parseSignedClaims(token).getPayload();
     }
 
     public boolean validateToken(String token, @NonNull UserDetails userDetails) {
