@@ -3,6 +3,7 @@ package com.samson.springappsintelliserver.controllers;
 import com.samson.springappsintelliserver.models.Users;
 import com.samson.springappsintelliserver.providers.PasswordProvider;
 import com.samson.springappsintelliserver.services.UserService;
+import com.samson.springappsintelliserver.types.Token;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

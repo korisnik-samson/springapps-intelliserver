@@ -34,7 +34,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(@NonNull HttpSecurity httpSecurity) throws Exception {
         return httpSecurity.csrf(AbstractHttpConfigurer::disable)
-                // the detokenb endpoint has to be protected - but for now it is not
+                // the de-token endpoint has to be protected - but for now it is not
                 .authorizeHttpRequests(request -> request.requestMatchers("register", "login", "de-token", "setSecret/*", "getSecret/*")
                         .permitAll()
                         .anyRequest() 
