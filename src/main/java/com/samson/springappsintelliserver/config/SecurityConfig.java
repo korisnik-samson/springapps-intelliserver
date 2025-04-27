@@ -18,6 +18,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.logging.Filter;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
@@ -33,8 +35,7 @@ public class SecurityConfig {
     // returning our own SecurityFilterChain bean - responsible for configuring security filters
     @Bean
     public SecurityFilterChain securityFilterChain(@NonNull HttpSecurity httpSecurity) throws Exception {
-        return httpSecurity.csrf(AbstractHttpConfigurer::disable)
-                // the de-token endpoint has to be protected - but for now it is not
+        return httpSecurity.csrf(AbstractHttpConfigurer::disable).requiresChannel(requiresChannel -> requiresChannel.anyRequest().requiresSecure())
                 .authorizeHttpRequests(request -> request.requestMatchers("register", "login", "de-token", "setSecret/*", "getSecret/*")
                         .permitAll()
                         .anyRequest() 
