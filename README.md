@@ -219,24 +219,60 @@ sudo systemctl restart nginx
 sudo systemctl enable nginx
 ```
 
-# ***SSL Configuration - OPTIONAL***
+# ***SSL Configuratio***
 
-* Install Certbot
+* Obtain a keystore from Java for the Spring boot Application
 ```bash
 
-sudo apt install certbot python3-certbot-nginx -y
+${JAVA_HOME}/bin/keytool -genkeypair -alias springapps-intelliserver -keystore 
+C:\Users\sammi\Desktop\repositories\springapps-intelliserver\src\main\resources\springapps-intelliserver
+-keystore.p12 -keypass secret -storeType PKCS12 -storepass secret -keyalg RSA -keysize 2048 -validity 365 -dname "C=Serbia, ST=Belgrade, L=Zvezdara, O=Samson, OU=YourUnit, CN=Samson" -ext "SAN=dns:localhost"
 ```
 
-* Obtain an SSL certificate
+* Extract the Certificate and Private key which will be used for NGINX
 ```bash
 
-sudo certbot --nginx
+# Extract the certificate
+openssl pkcs12 -in /home/intelliuser/repository/springapps-intelliserver/src/main/resources/springapps-intelliserver-keystore.p12 -clcerts -nokeys -out /home/intelliuser/repository/cert.pem -password pass:secret
+
+# Extract the private key
+openssl pkcs12 -in /home/intelliuser/repository/springapps-intelliserver/src/main/resources/springapps-intelliserver-keystore.p12 -nocerts -nodes -out /home/intelliuser/repository/key.pem -password pass:secret
 ```
+
+* Making necessary changes to the NGINX configuration
+```bash
+server {
+        listen 443 ssl;
+        server_name userservice.westeurope.cloudapp.azure.com;
+        
+        # Point to the extracted PEM files
+        ssl_certificate /home/intelliuser/repository/cert.pem;
+        ssl_certificate_key /home/intelliuser/repository/key.pem;
+        
+        # Adding recommended SSL parameters is optional
+        ssl_protocols TLSv1.2 TLSv1.3;
+        ssl_prefer_server_ciphers on;
+        ssl_ciphers 'ECDHE-ECDSA-AES128-GCM-SHA256:ECDHE-RSA-AES128-GCM-SHA256:ECDHE-ECDSA-AES256-GCM-SHA384:ECDHE-RSA-AES256-GCM-SHA384';
+        
+        location / {
+            proxy_pass https://localhost:8443/;
+            proxy_set_header Host $host;
+            proxy_set_header X-Real-IP $remote_addr;
+            proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+            proxy_set_header X-Forwarded-Proto $scheme;
+            proxy_set_header X-Forwarded-Port $server_port;
+
+            proxy_buffer_size 128k;
+            proxy_buffers 4 256k;
+            proxy_busy_buffers_size 256k;
+        }
+}
+````
 
 * Test the SSL certificate renewal
 ```bash
 
-sudo certbot renew --dry-run
+sudo nginx -t
 ```
 
 # Automation Script
