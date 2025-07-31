@@ -219,7 +219,7 @@ sudo systemctl restart nginx
 sudo systemctl enable nginx
 ```
 
-# ***SSL Configuratio***
+# ***SSL Configuration***
 
 * Obtain a keystore from Java for the Spring boot Application
 ```bash
